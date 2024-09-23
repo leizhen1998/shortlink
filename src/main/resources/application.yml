@@ -1,0 +1,20 @@
+server:
+  port: 81
+  servlet:
+    context-path: /
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://10.228.162.17:3306/shortlink?useSSL=false&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    username: root
+    password: dfcfqh1234
+  jpa:
+    database: mysql
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+
+project:
+  config:
+    404Url: https://github.com/404
