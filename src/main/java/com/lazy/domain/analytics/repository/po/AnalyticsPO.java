@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Data;
 import lombok.experimental.Accessors;
 
+import java.time.LocalDateTime;
+
 @Entity
 @Table(name = "analytics")
 @Data
@@ -15,6 +17,9 @@ public class AnalyticsPO {
 
     @Column(name = "short_code", nullable = false, length = 7)
     private String shortCode;
+
+    @Column(name = "click_time", nullable = false)
+    private LocalDateTime clickTime;
 
     @Column(name = "original_url", length = 1000)
     private String referer;
@@ -200,4 +205,7 @@ public class AnalyticsPO {
      */
     @Column(name = "webview_app_version_major")
     private String webviewAppVersionMajor;
+
+    @Column(name = "created_at", nullable = false, updatable = false)
+    private LocalDateTime createdAt;
 }

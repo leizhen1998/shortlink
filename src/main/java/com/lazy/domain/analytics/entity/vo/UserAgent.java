@@ -3,6 +3,8 @@ package com.lazy.domain.analytics.entity.vo;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
+import java.util.Map;
+
 @Data
 @AllArgsConstructor
 public class UserAgent {
@@ -120,4 +122,32 @@ public class UserAgent {
      * WebView应用版本主版本
      */
     private String webviewAppVersionMajor;
+
+    public UserAgent(String userAgent, Map<String, String> parsedUserAgent) {
+        this(
+                userAgent,
+                parsedUserAgent.get("DeviceClass"),
+                parsedUserAgent.get("DeviceName"),
+                parsedUserAgent.get("DeviceBrand"),
+                parsedUserAgent.get("OperatingSystemClass"),
+                parsedUserAgent.get("OperatingSystemName"),
+                parsedUserAgent.get("OperatingSystemVersion"),
+                parsedUserAgent.get("OperatingSystemVersionMajor"),
+                parsedUserAgent.get("OperatingSystemVersionBuild"),
+                parsedUserAgent.get("LayoutEngineClass"),
+                parsedUserAgent.get("LayoutEngineName"),
+                parsedUserAgent.get("LayoutEngineVersion"),
+                parsedUserAgent.get("LayoutEngineVersionMajor"),
+                parsedUserAgent.get("AgentClass"),
+                parsedUserAgent.get("AgentName"),
+                parsedUserAgent.get("AgentVersion"),
+                parsedUserAgent.get("AgentVersionMajor"),
+                parsedUserAgent.get("AgentLanguage"),
+                parsedUserAgent.get("AgentLanguageCode"),
+                parsedUserAgent.get("AgentSecurity"),
+                parsedUserAgent.get("WebviewAppName"),
+                parsedUserAgent.get("WebviewAppVersion"),
+                parsedUserAgent.get("WebviewAppVersionMajor")
+        );
+    }
 }

@@ -27,8 +27,7 @@ public class ShortLink {
     public static ShortLink create(String originalUrl, Long createdBy) {
         ShortLink shortLink = new ShortLink();
         shortLink.setOriginalUrl(originalUrl)
-                .setCreatedBy(createdBy)
-                .setCreatedAt(LocalDateTime.now());
+                .setCreatedBy(createdBy);
         return shortLink;
     }
 

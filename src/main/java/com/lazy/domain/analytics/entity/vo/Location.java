@@ -1,5 +1,6 @@
 package com.lazy.domain.analytics.entity.vo;
 
+import com.ip2location.IPResult;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -45,4 +46,17 @@ public class Location {
      * 时区
      */
     private String timezone;
+
+    public Location(String clientIp, IPResult ipResult) {
+        this(
+                clientIp,
+                ipResult.getCountryLong(),
+                ipResult.getRegion(),
+                ipResult.getCity(),
+                ipResult.getLatitude(),
+                ipResult.getLongitude(),
+                ipResult.getZipCode(),
+                ipResult.getTimeZone()
+        );
+    }
 }

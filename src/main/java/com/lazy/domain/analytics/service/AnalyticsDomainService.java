@@ -25,43 +25,10 @@ public class AnalyticsDomainService {
         IPResult ipResult = IPUtils.getLocation(event.getClientIp());
         Map<String, String> parsedUserAgent = UserAgentUtils.parse(event.getUserAgent());
 
-        Location location = new Location(
-                event.getClientIp(),
-                ipResult.getCountryLong(),
-                ipResult.getRegion(),
-                ipResult.getCity(),
-                ipResult.getLatitude(),
-                ipResult.getLongitude(),
-                ipResult.getZipCode(),
-                ipResult.getTimeZone());
+        Location location = new Location(event.getClientIp(), ipResult);
+        UserAgent userAgent = new UserAgent(event.getUserAgent(), parsedUserAgent);
 
-        UserAgent userAgent = new UserAgent(
-                event.getUserAgent(),
-                parsedUserAgent.get("DeviceClass"),
-                parsedUserAgent.get("DeviceName"),
-                parsedUserAgent.get("DeviceBrand"),
-                parsedUserAgent.get("OperatingSystemClass"),
-                parsedUserAgent.get("OperatingSystemName"),
-                parsedUserAgent.get("OperatingSystemVersion"),
-                parsedUserAgent.get("OperatingSystemVersionMajor"),
-                parsedUserAgent.get("OperatingSystemVersionBuild"),
-                parsedUserAgent.get("LayoutEngineClass"),
-                parsedUserAgent.get("LayoutEngineName"),
-                parsedUserAgent.get("LayoutEngineVersion"),
-                parsedUserAgent.get("LayoutEngineVersionMajor"),
-                parsedUserAgent.get("AgentClass"),
-                parsedUserAgent.get("AgentName"),
-                parsedUserAgent.get("AgentVersion"),
-                parsedUserAgent.get("AgentVersionMajor"),
-                parsedUserAgent.get("AgentLanguage"),
-                parsedUserAgent.get("AgentLanguageCode"),
-                parsedUserAgent.get("AgentSecurity"),
-                parsedUserAgent.get("WebviewAppName"),
-                parsedUserAgent.get("WebviewAppVersion"),
-                parsedUserAgent.get("WebviewAppVersionMajor")
-        );
-
-        Analytics analytics = Analytics.create(event.getShortCode(), event.getReferer(), location, userAgent);
+        Analytics analytics = Analytics.create(event.getShortCode(), event.getClickTime(), event.getReferer(), location, userAgent);
         analyticsRepository.save(analytics);
     }
 }

@@ -28,7 +28,7 @@ public class RedirectAppService {
                 return new RedirectResponse(shortLinkConfig.getDefaultNotFoundUrl());
             }
 
-            ClickShortLinkEvent clickShortLinkEvent = new ClickShortLinkEvent(redirectRequest.shortCode(), redirectRequest.clientIp(), redirectRequest.referer(), redirectRequest.userAgent());
+            ClickShortLinkEvent clickShortLinkEvent = ClickShortLinkEvent.create(redirectRequest.shortCode(), redirectRequest.clientIp(), redirectRequest.referer(), redirectRequest.userAgent());
             eventPublisher.publish(EventTopicEnum.CLICK_SHORT_LINK, clickShortLinkEvent);
             return new RedirectResponse(shortLink.getOriginalUrl());
         } catch (Exception e) {
