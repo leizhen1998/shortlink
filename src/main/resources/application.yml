@@ -6,15 +6,86 @@ server:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://10.228.162.17:3306/shortlink?useSSL=false&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://127.0.0.1:3306/shortlink?useSSL=false&characterEncoding=UTF-8&autoReconnect=true&serverTimezone=Asia/Shanghai
     username: root
-    password: dfcfqh1234
+    password: 123456
   jpa:
     database: mysql
     show-sql: true
     hibernate:
       ddl-auto: update
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    client-id: shortlink
+    producer:
+      acks: 1
+      # 默认批处理大小（以字节为单位）。 小批量将使分批变得不那么普遍，并且可能会降低吞吐量（零批量将完全禁用批处理）
+      batch-size: 16384
+      # 生产者可以用来缓冲等待发送到服务器的记录的内存总字节数
+      buffer-memory: 33554432
+      # 生产者生成的所有数据的压缩类型，默认值为"none"，可以配置为"gzip"，“snappy”和“lz4”
+      compression-type: gzip
+      # 生产者所有keys的序列化类，默认是 org.apache.kafka.common.serialization.StringSerializer
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 生产者所有values的序列化类，默认是 org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+      # 当数据发送失败时，可以重试发送的次数
+      retries: 3
+      # transaction-id-prefix不为空时，为生产者启用事务支持
+      # transaction-id-prefix:
+      # 生产者其他属性配置，类型 java.util.Map<java.lang.String,java.lang.String>
+      properties:
+        # 消息体大小
+        max.request.size: 5242880
+        # 发送频率，和batch.size参数满足任一条件发送
+        linger.ms: 100
+    consumer:
+      # 消费者的消费记录offset是否后台自动提交
+      enable-auto-commit: false
+      # 消费者组ID
+      group-id: shortlink
+      # 当消费者的消费记录offset是否后台自动提交时，多长时间自动提交一次，单位：毫秒
+      # auto-commit-interval:
+      # 当Kafka中没有初始偏移量或服务器上不再存在当前偏移量时该怎么办
+      # earliest：自动将偏移量重置为最早的偏移量
+      # latest：自动将偏移量重置为最迟的偏移量
+      # none：如果未找到消费者组的先前偏移量，则将异常抛出给消费者
+      # exception：向消费者抛出异常
+      auto-offset-reset: latest
+      # 一次调用poll（）返回的最大记录数，默认是500
+      max-poll-records: 500
+      # 当没有足够的数据（数据的大小不小于 fetch.min.bytes）返回给客户端时，服务器最大阻塞时间
+      fetch-max-wait: 500
+      # 服务器应为获取请求返回的最小数据量（以字节为单位）
+      fetch-min-size: 1
+      # 心跳与消费者协调员之间的预期时间（以毫秒为单位），默认值为3000
+      heartbeat-interval: 3000
+      # 消费者所有keys的序列化类，默认是 org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      # 消费者所有values的序列化类，默认是 org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      retries: 3
+      # 消费者其他属性配置，类型 java.util.Map<java.lang.String,java.lang.String>
+    # 消费者监听器
+    listener:
+      # 监听类型，类型 Listener.Type
+      # Type.SINGLE：一次调用一个ConsumerRecord的端点，默认
+      # Type.BATCH：用一批ConsumerRecords调用端点
+      type: single
+      # 当 auto.commit.enable 设置为false时，表示kafak的offset由consumer手动维护，spring-kafka提供了通过ackMode的值表示不同的手动提交方式
+      # AckMode.RECORD   当每一条记录被消费者监听器（ListenerConsumer）处理之后提交
+      # AckMode.BATCH   当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后提交
+      # AckMode.TIME   当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，距离上次提交时间大于TIME时提交
+      # AckMode.COUNT  当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后，被处理record数量大于等于COUNT时提交
+      # AckMode.COUNT_TIME   上述 TIME 或 COUNT 有一个条件满足时提交
+      # AckMode.MANUAL    当每一批poll()的数据被消费者监听器（ListenerConsumer）处理之后, 手动调用Acknowledgment.acknowledge()后提交
+      # AckMode.MANUAL_IMMEDIATE    手动调用Acknowledgment.acknowledge()后立即提交
+      ack-mode: manual_immediate
+      # 在监听器容器中运行的线程数，表示启动多少个并发的消费者，这个值不能大于实际消费的主题的分区数
+      concurrency: 1
+      # 消费监听接口监听的主题不存在时，默认会报错。所以通过设置为 false ，解决报错
+      missing-topics-fatal: false
 
-project:
+shortlink:
   config:
-    404Url: https://github.com/404
+    defaultNotFoundUrl: https://github.com/404

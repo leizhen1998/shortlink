@@ -19,7 +19,7 @@ public class CreateShortLinkAppService {
     }
 
     public void createShortLink(CreateShortLinkRequest createShortLinkRequest) {
-        ShortLink shortLink = ShortLink.create(createShortLinkRequest.originalUrl(), createShortLinkRequest.createBy());
+        ShortLink shortLink = ShortLink.create(createShortLinkRequest.getOriginalUrl(), createShortLinkRequest.getCreateBy());
         shortLinkDomainService.generateUniqueShortCode(shortLink);
         shortLinkRepository.save(shortLink);
     }

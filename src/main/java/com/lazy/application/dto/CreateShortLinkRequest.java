@@ -1,11 +1,12 @@
 package com.lazy.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import lombok.Data;
 
-public record CreateShortLinkRequest(
+@Data
+public class CreateShortLinkRequest{
         @NotBlank(message = "originalUrl must not be empty")
-        String originalUrl,
+        private String originalUrl;
 
-        Long createBy
-) {
+        private Long createBy;
 }

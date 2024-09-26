@@ -5,10 +5,8 @@ import com.ip2location.IPResult;
 import io.micrometer.common.util.StringUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.data.repository.init.ResourceReader;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 public class IPUtils {
     private static final IP2Location ip2Location = new IP2Location();
@@ -20,10 +18,6 @@ public class IPUtils {
             throw new RuntimeException(e);
         }
     }
-
-    public IPUtils() throws IOException {
-    }
-
 
     public static String getIpAdrress(HttpServletRequest request) {
         String ip = request.getHeader("X-Forwarded-For");
@@ -65,8 +59,4 @@ public class IPUtils {
         IPResult result = ip2Location.IPQuery(ip);
         return result;
     }
-
-//    public static void main(String[] args) throws IOException {
-//        System.out.println(getLocation("180.169.109.129"));
-//    }
 }

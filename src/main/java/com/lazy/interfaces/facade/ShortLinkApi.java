@@ -1,7 +1,6 @@
 package com.lazy.interfaces.facade;
 
 import com.lazy.application.service.CreateShortLinkAppService;
-import com.lazy.domain.shortlink.entity.ShortLink;
 import com.lazy.application.dto.CreateShortLinkRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,9 +20,7 @@ public class ShortLinkApi {
     @PostMapping("/create")
     public void createShortLink(@RequestBody @Valid CreateShortLinkRequest createShortLinkRequest) {
         Long createBy = 0L;
-        ShortLink shortLink = new ShortLink();
-        shortLink.setOriginalUrl(createShortLinkRequest.originalUrl())
-                .setCreatedBy(createBy);
+        createShortLinkRequest.setCreateBy(createBy);
 
         createShortLinkAppService.createShortLink(createShortLinkRequest);
     }
