@@ -32,7 +32,7 @@ public class KafkaEventPublisher implements EventPublisher {
                 } else {
                     RecordMetadata recordMetadata = result.getRecordMetadata();
                     ProducerRecord producerRecord = result.getProducerRecord();
-                    Integer partition = producerRecord.partition();
+                    Integer partition = recordMetadata.partition();
                     long offset = recordMetadata.offset();
                     Object key = producerRecord.key();
                     log.info("KafkaEventPublisher publish success. topic:{}, partition: {}, offset: {}, key: {}, value: {}", topic, partition, offset, key, value);

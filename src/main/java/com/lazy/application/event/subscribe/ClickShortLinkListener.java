@@ -1,7 +1,7 @@
 package com.lazy.application.event.subscribe;
 
 import com.lazy.domain.analytics.event.ClickShortLinkEvent;
-import com.lazy.domain.analytics.service.ClickShortLinkEventService;
+import com.lazy.domain.analytics.service.AnalyticsDomainService;
 import com.lazy.infrastructure.util.JSONUtils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,7 +14,7 @@ import org.springframework.stereotype.Component;
 @Component
 @AllArgsConstructor
 public class ClickShortLinkListener {
-    private final ClickShortLinkEventService clickShortLinkEventService;
+    private final AnalyticsDomainService analyticsDomainService;
 
     @KafkaListener(topics = "#{T(com.lazy.application.event.topic.EventTopicEnum).CLICK_SHORT_LINK.topic}")
     public void onEvent(ConsumerRecord<String, String> consumerRecord, Acknowledgment ack) throws Exception {
@@ -27,7 +27,7 @@ public class ClickShortLinkListener {
                     consumerRecord.value());
 
             ClickShortLinkEvent clickShortLinkEvent = JSONUtils.json2pojo(consumerRecord.value(), ClickShortLinkEvent.class);
-            clickShortLinkEventService.handle(clickShortLinkEvent);
+            analyticsDomainService.handleEvent(clickShortLinkEvent);
         } finally {
             ack.acknowledge();
         }
